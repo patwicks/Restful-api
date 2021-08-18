@@ -73,7 +73,7 @@ const CREATE_NEW_USER = async (req, res) => {
                console.log(error.message);
             }
         }
-        res.status(200).json({successMessage: 'Succesfully Registered!'});
+        res.status(200).json(saveNewUser);
     }catch(err){
         res.status(400).json({message: 'Failed to register!'});
         console.log(err.message)
