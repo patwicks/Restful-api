@@ -44,10 +44,8 @@ const CREATE_NEW_USER = async (req, res) => {
     // generate random otp numbers
     const myOTP = otpGenerator.generate(6);
     // generate random user id
-    const Id = crypto.randomBytes(16).toString('hex');
-    // Create new user
+
     const user = new User({
-        Id: Id,
         firstname: req.body.firstname.trim(),
         lastname: req.body.lastname.trim(),
         middlename: req.body.middlename.trim(),
