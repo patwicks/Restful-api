@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/model.user');
 const dotenv = require('dotenv');
 const otpGenerator = require('generate-otp');
+const crypto = require('crypto');
 const { registerValidation, loginValidation } = require('../validation/driver.data.validation');
 
 dotenv.config();
@@ -40,11 +41,13 @@ const CREATE_NEW_USER = async (req, res) => {
     // Hasing password using Bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
     // generate random otp numbers
     const myOTP = otpGenerator.generate(6);
+    // generate random user id
+    const Id = crypto.randomBytes(16).toString('hex');
     // Create new user
     const user = new User({
+        Id: req.body.Id,
         firstname: req.body.firstname.trim(),
         lastname: req.body.lastname.trim(),
         middlename: req.body.middlename.trim(),
@@ -133,14 +136,14 @@ const VALIDATE_ACCOUNT =  async (req, res) => {
         return res.status(400).json({message: 'No Account is Found!'})
     }
     else {
-        if(user.otpUsed === req.body.otpUsed){
+        if(req.body.otpUsed === user.otpUsed){
             try {
                 const validate = await User.updateOne(
                     {_id: req.params.userId},
                     {$set: {
                         isValidated: true}}
                 );
-                res.status(200).json({successMessage: "Updated Successfully!"})
+                res.status(200).json({message: "Updated Successfully!"})
             } catch (error) {
                 res.status(400).json({message: 'Unexpected error occured. Try again!'})
             }
