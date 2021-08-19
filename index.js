@@ -3,13 +3,15 @@ const app = express();
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authRoute = require('./routes/route.driver.auth');
+const DriverRoute = require('./routes/route.driver');
+const StoreRoute = require('./routes/route.store');
 
 dotenv.config();
 // routes
 app.use(express.json());
 app.use(cors());
-app.use('/api/user', authRoute);
+app.use('/api/driver', DriverRoute);
+app.use('/api/store', StoreRoute);
 
 // connect to the database
 mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});

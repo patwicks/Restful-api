@@ -1,12 +1,15 @@
 const Joi = require('joi');
 
-const registerValidation = (data) => {
+const registerValidationStore = (data) => {
     const schema = Joi.object({
+        accountType: Joi.string(),
         firstname: Joi.string().required().min(2).max(255),
         lastname: Joi.string().required().min(2).max(255),
         middlename: Joi.string().required().min(2).max(255),
         gender: Joi.string().required(),
         age: Joi.string().required().min(2).max(3),
+        storeName: Joi.string().required().min(5).max(255),
+        storeAddress: Joi.string().required().min(10).max(255),
         email: Joi.string().required().min(15).max(255).email(),
         password: Joi.string().required().min(8).max(255),
         contactNo: Joi.string().required().min(10).max(10),
@@ -16,7 +19,7 @@ const registerValidation = (data) => {
     return schema.validate(data);
 }
 // Login Validation
-const loginValidation = (data) => {
+const loginValidationStore = (data) => {
     const schema = Joi.object({
         email: Joi.string().required().min(15).max(255).email(),
         password: Joi.string().required().min(8).max(255),
@@ -25,5 +28,5 @@ const loginValidation = (data) => {
 }
 
 module.exports = { 
-    registerValidation,
-    loginValidation };
+    registerValidationStore,
+    loginValidationStore };

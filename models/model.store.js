@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const storeSchema = new mongoose.Schema({
+    accountType: {
+        type: String
+    },
     firstname: {
         type: String,
         required: true,
@@ -28,6 +31,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 2,
         max: 3
+    },
+    storeName: {
+        type: String,
+        required: true,
+        max: 255
+    },
+    storeAddress: {
+        type: String,
+        required: true,
+        max: 255
     },
     email: {
         type: String,
@@ -60,4 +73,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Store', storeSchema);
