@@ -127,12 +127,8 @@ const UPDATE_USER_DATA = async (req, res) =>  {
 
 // Validate account
 const VALIDATE_ACCOUNT =  async (req, res) => {
-
     const driver = await Driver.findOne({email: req.body.email});
-    if(!driver) {
-        return res.status(400).json({error: 'No Account is Found!'})
-    }
-    else {
+    if(driver) {
         if(req.body.otpUsed === driver.otpUsed){
             try {
                 const validate = await Driver.updateOne(
@@ -148,6 +144,9 @@ const VALIDATE_ACCOUNT =  async (req, res) => {
         else {
             res.status(400).json({error: 'Wrong OTP'})
         }
+    }
+    else {
+        return res.status(400).json({error: 'No Account is Found!'})
     }
  }
 
