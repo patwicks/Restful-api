@@ -140,7 +140,7 @@ const VALIDATE_ACCOUNT =  async (req, res) => {
                 res.status(400).json({error: 'Unexpected error occured. Try again!'})
             }
         }
-        else {
+        else if(!driver && req.body.otpUsed !== driver.otpUsed) {
             res.status(400).json({error: 'Unexpected error occured. Try again!'})
         }
  }
