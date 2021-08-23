@@ -119,7 +119,7 @@ const UPDATE_USER_DATA = async (req, res) =>  {
                 password: hashedPassword,
                 contactNo: req.body.contactNo}}
         );
-        res.status(200).json({message: "Updated Successfully!"})
+        res.status(200).json({message: "Verified!"})
     } catch (error) {
         res.status(400).json({error: 'Unexpected error occured. Try again!'})
     }

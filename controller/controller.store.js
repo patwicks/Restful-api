@@ -131,27 +131,25 @@ const UPDATE_STORE_DATA = async (req, res) =>  {
 
 // Validate account
 const VALIDATE_ACCOUNT =  async (req, res) => {
-
     const store = await Store.findOne({email: req.body.email});
-    if(!store) {
-        return res.status(400).json({error: 'No Account is Found!'})
-    }
-    else {
-        if(req.body.otpUsed === store.otpUsed){
+    if(store){
+        if(req.body.otpUsed === store.otpUsed) {
             try {
-                const validate = await Store.updateOne(
-                    {_id: req.params.storeId},
-                    {$set: {
-                        isValidated: true}}
-                );
-                res.status(200).json({message: "Updated Successfully!"})
+            const validate = await Store.updateOne(
+                {_id: req.params.storeId},
+                {$set: {
+                    isValidated: true}}
+            );
+                res.status(200).json({message: "Verified!"})
             } catch (error) {
                 res.status(400).json({error: 'Unexpected error occured. Try again!'})
-            }
+            } 
+        }else {
+            res.status(400).json({error: 'Wrong OTP!'})
         }
-        else {
-            res.status(400).json({error: 'Wrong OTP'})
-        }
+    }
+    else{
+        res.status(400).json({error: 'Unexpected error occured. Try again!'})
     }
  }
 
