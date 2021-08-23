@@ -16,6 +16,6 @@ router.put('/update/:driverId', UPDATE_USER_DATA);
 router.post('/register', CREATE_NEW_USER);
 router.post('/login', LOGIN_USER);
 router.post('/validate/:driverId', VALIDATE_ACCOUNT);
-router.post('/resend/:driverId', RESEND_OTP);
+router.put('/resend/:driverId', RESEND_OTP);
 
 module.exports = router;

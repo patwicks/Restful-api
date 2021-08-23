@@ -16,6 +16,6 @@ router.put('/update/:storeId', UPDATE_STORE_DATA);
 router.post('/register', CREATE_NEW_STORE);
 router.post('/login', LOGIN_STORE);
 router.post('/validate/:storeId', VALIDATE_ACCOUNT);
-router.post('/resend/:storeId', RESEND_OTP);
+router.put('/resend/:storeId', RESEND_OTP);
 
 module.exports = router;
