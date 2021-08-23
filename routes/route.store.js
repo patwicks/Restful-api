@@ -5,7 +5,8 @@ const {
     CREATE_NEW_STORE,
     LOGIN_STORE,
     UPDATE_STORE_DATA,
-    VALIDATE_ACCOUNT
+    VALIDATE_ACCOUNT,
+    RESEND_OTP
     } = require('../controller/controller.store')
 
 //  
@@ -15,5 +16,6 @@ router.put('/update/:storeId', UPDATE_STORE_DATA);
 router.post('/register', CREATE_NEW_STORE);
 router.post('/login', LOGIN_STORE);
 router.post('/validate/:storeId', VALIDATE_ACCOUNT);
+router.post('/resend/:storeId', RESEND_OTP);
 
 module.exports = router;
