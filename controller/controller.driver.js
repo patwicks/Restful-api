@@ -128,19 +128,23 @@ const UPDATE_USER_DATA = async (req, res) =>  {
 // Validate account
 const VALIDATE_ACCOUNT =  async (req, res) => {
     const driver = await Driver.findOne({email: req.body.email});
-        if(driver && req.body.otpUsed === driver.otpUsed){
-            try {
+        if(driver){
+            if(req.body.otpUsed === driver.otpUsed) {
+                try {
                 const validate = await Driver.updateOne(
                     {_id: req.params.driverId},
                     {$set: {
                         isValidated: true}}
                 );
-                res.status(200).json({message: "Updated Successfully!"})
-            } catch (error) {
-                res.status(400).json({error: 'Unexpected error occured. Try again!'})
+                    res.status(200).json({message: "Updated Successfully!"})
+                } catch (error) {
+                    res.status(400).json({error: 'Unexpected error occured. Try again!'})
+                } 
+            }else {
+                res.status(400).json({error: 'Wrong OTP!'})
             }
         }
-        else if(!driver && req.body.otpUsed !== driver.otpUsed) {
+        else{
             res.status(400).json({error: 'Unexpected error occured. Try again!'})
         }
  }
