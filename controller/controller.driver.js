@@ -170,7 +170,6 @@ const RESEND_OTP = async (req, res) => {
                console.log(error.message);
             }
         }
-        
         res.status(200).json({message: "Resend Successfully!"})
        } catch (error) {
            res.status(400).json({error: 'Unexpected error occured. Try again!'})

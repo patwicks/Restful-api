@@ -154,30 +154,34 @@ const VALIDATE_ACCOUNT =  async (req, res) => {
  }
 //  Resend Otp
 const RESEND_OTP = async (req, res) => {
-    const store = await Store.findOne({_id: req.params.stroreId});
-     try {
-        // generate random otp numbers
-        const myOTP = otpGenerator.generate(6);
-       const updateOtpUsed = await Store.updateOne(
-           {_id: req.params.storeId},
-           {$set: {otpUsed: myOTP}}
-       );
-       if(updateOtpUsed) {
+    const store = await Store.findOne({email: req.body.email});
+    if(store) {
         try {
-            MESSAGE_CLIENT.messages.create({
-                body:`This is your OTP from Find-talyer App: ${myOTP}`,
-                from: '+19316503399',
-                to: `+63${store.contactNo}`
-            })
-        } catch (error) {
-           console.log(error.message);
+            // generate random otp numbers
+            const myOTP = otpGenerator.generate(6);
+           const updateOtpUsed = await Store.updateOne(
+               {_id: req.params.storeId},
+               {$set: {otpUsed: myOTP}}
+           );
+           if(updateOtpUsed) {
+            try {
+                MESSAGE_CLIENT.messages.create({
+                    body:`This is your OTP from Find-talyer App: ${myOTP}`,
+                    from: '+19316503399',
+                    to: `+63${store.contactNo}`
+                })
+            } catch (error) {
+               console.log(error.message);
+            }
         }
+        res.status(200).json({message: "Resend Successfully!"})
+       } catch (error) {
+           res.status(400).json({error: 'Unexpected error occured. Try again!'})
+       }
     }
-    
-    res.status(200).json({message: "Resend Successfully!"})
-   } catch (error) {
-       res.status(400).json({error: 'Unexpected error occured. Try again!'})
-   }
+    else {
+        res.status(400).json({error: 'Unexpected error occured. Try again!'})
+    }
 }
 
  module.exports = {
