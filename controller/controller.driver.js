@@ -191,44 +191,32 @@ const FIND_USER_BY_EMAIL = async (req, res) => {
         return res.status(400).json({error: 'Password cannot be reset!'})
     }
     else {
-        // generate random otp numbers
-        //update first the OTP used in database before sending new
-        const myOTP = otpGenerator.generate(6);
-        const updateOtpUsed = await Driver.updateOne(
-            {_id: req.params.driverId},
-            {$set: {otpUsed: myOTP}}
-        );
-        if(updateOtpUsed) {
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                  user: process.env.FIND_TALYER_EMAIL,
-                  pass: process.env.FIND_TALYER_PASSWORD
-                }
-              });
-              
-              const mailOptions = {
-                from: process.env.FIND_TALYER_EMAIL,
-                to: req.body.email,
-                subject: 'RESET PASSORD - CODE VERIFFICATION',
-                text: `VERIFICATION CODE for Reseting your Password: ${myOTP}`
-              };
-            transporter.sendMail(mailOptions, function(err, data){
-                if(err) {
-                    return res.status(400).json({error: 'Failed to send Verification Code!'});
-                }
-                else {
-                    return res.status(200).send(driver).json({message: 'successfully send!'})
-                }
-            }); 
-        }
-        else {
-            return res.status(400).json({error: 'Unexpected Error Occured!'});
-        }
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.FIND_TALYER_EMAIL,
+                pass: process.env.FIND_TALYER_PASSWORD
+            }
+            });
+
+            const mailOptions = {
+            from: process.env.FIND_TALYER_EMAIL,
+            to: req.body.email,
+            subject: 'RESET PASSORD - CODE VERIFFICATION',
+            text: `VERIFICATION CODE for Reseting your Password: ${driver.otpUsed}`
+            };
+        transporter.sendMail(mailOptions, function(err, data){
+            if(err) {
+                return res.status(400).json({error: 'Failed to send Verification Code!'});
+            }
+            else {
+                return res.status(200).send(driver).json({message: 'successfully send!'})
+            }
+        }); 
      }
 }
 // Reset Password
-// update userdata
+
 
  module.exports = {
     GET_ALL_USER,
