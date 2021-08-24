@@ -183,7 +183,41 @@ const RESEND_OTP = async (req, res) => {
         res.status(400).json({error: 'Unexpected error occured. Try again!'})
     }
 }
+// Reset password and sending email otp for verification
+// Check first if the given gmail
+const FIND_USER_BY_EMAIL = async (req, res) => {
+    // Check email if already existing to the database
+    const store = await Store.findOne({email: req.body.email});
+    if(!store) {
+       return res.status(400).json({error: 'Email is not existing!'})
+   } else if(store.otpUsed === null){
+       return res.status(400).json({error: 'Password cannot be reset!'})
+   }
+   else {
+       const transporter = nodemailer.createTransport({
+           service: 'gmail',
+           auth: {
+               user: process.env.FIND_TALYER_EMAIL,
+               pass: process.env.FIND_TALYER_PASSWORD
+           }
+           });
 
+           const mailOptions = {
+           from: process.env.FIND_TALYER_EMAIL,
+           to: req.body.email,
+           subject: 'RESET PASSORD - CODE VERIFFICATION',
+           text: `VERIFICATION CODE for Reseting your Password: ${store.otpUsed}`
+           };
+       transporter.sendMail(mailOptions, function(err, data){
+           if(err) {
+               return res.status(400).json({error: 'Failed to send Verification Code!'});
+           }
+           else {
+               return res.status(200).send(store).json({message: 'successfully send!'})
+           }
+       }); 
+    }
+}
  module.exports = {
     GET_ALL_STORE,
     FIND_ONE_STORE,
@@ -191,5 +225,6 @@ const RESEND_OTP = async (req, res) => {
     LOGIN_STORE,
     UPDATE_STORE_DATA,
     VALIDATE_ACCOUNT,
-    RESEND_OTP
+    RESEND_OTP,
+    FIND_USER_BY_EMAIL
  }
