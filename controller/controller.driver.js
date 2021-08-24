@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Driver = require('../models/model.driver');
 const dotenv = require('dotenv');
 const otpGenerator = require('generate-otp');
+const nodemailer = require('nodemailer');
 const { registerValidation, loginValidation } = require('../validation/validation.driver.data');
 
 dotenv.config();
@@ -179,6 +180,56 @@ const RESEND_OTP = async (req, res) => {
         res.status(400).json({error: 'Unexpected error occured. Try again!'})
     }
 }
+// Reset password and sending email otp for verification
+// Check first if the given gmail
+const FIND_USER_BY_EMAIL = async (req, res) => {
+     // Check email if already existing to the database
+     const driver = await Driver.findOne({email: req.body.email});
+     if(!driver) {
+        return res.status(400).json({error: 'Email is not existing!'})
+    } else if(driver.otpUsed === null){
+        return res.status(400).json({error: 'Password cannot be reset!'})
+    }
+    else {
+        // generate random otp numbers
+        //update first the OTP used in database before sending new
+        const myOTP = otpGenerator.generate(6);
+        const updateOtpUsed = await Driver.updateOne(
+            {_id: req.params.driverId},
+            {$set: {otpUsed: myOTP}}
+        );
+        if(updateOtpUsed) {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: process.env.FIND_TALYER_EMAIL,
+                  pass: process.env.FIND_TALYER_PASSWORD
+                }
+              });
+              
+              const mailOptions = {
+                from: process.env.FIND_TALYER_EMAIL,
+                to: req.body.email,
+                subject: 'RESET PASSORD - CODE VERIFFICATION',
+                text: `VERIFICATION CODE for Reseting your Password: ${myOTP}`
+              };
+            transporter.sendMail(mailOptions, function(err, data){
+                if(err) {
+                    return res.status(400).json({error: 'Failed to send Verification Code!'});
+                }
+                else {
+                    return res.status(200).send(driver).json({message: 'successfully send!'})
+                }
+            }); 
+        }
+        else {
+            return res.status(400).json({error: 'Unexpected Error Occured!'});
+        }
+     }
+}
+// Reset Password
+// update userdata
+
  module.exports = {
     GET_ALL_USER,
     FIND_ONE_USER,
@@ -186,5 +237,6 @@ const RESEND_OTP = async (req, res) => {
     LOGIN_USER,
     UPDATE_USER_DATA,
     VALIDATE_ACCOUNT,
-    RESEND_OTP
+    RESEND_OTP,
+    FIND_USER_BY_EMAIL
  }
