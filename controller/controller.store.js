@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Store = require('../models/model.store');
 const dotenv = require('dotenv');
+const nodemailer = require('nodemailer');
 const otpGenerator = require('generate-otp');
 const { registerValidationStore, loginValidationStore } = require('../validation/validation.store.data');
 
@@ -218,6 +219,7 @@ const FIND_USER_BY_EMAIL = async (req, res) => {
        }); 
     }
 }
+// Reset Password
  module.exports = {
     GET_ALL_STORE,
     FIND_ONE_STORE,
