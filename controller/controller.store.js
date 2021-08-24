@@ -220,6 +220,32 @@ const FIND_USER_BY_EMAIL = async (req, res) => {
     }
 }
 // Reset Password
+
+const RESET_PASSWORD = async (req, res) => {
+    // Check email if already existing to the database
+    const store = await Store.findOne({email: req.body.email});
+    if(!store){
+        return res.status(400).json({error: 'No user found!'})
+    }
+    else if(store.otpUsed !== req.body.otpUsed) {
+        return res.status(400).json({error: 'Invalid verfication code!'})
+    }
+    else {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const updateUserPassword= await Store.updateOne(
+            {_id: req.params.storeId},
+            {$set: {password: hashedPassword}}
+        );
+
+        if(!updateUserPassword) {
+            return res.status(400).json({error: 'Failed to reset password!'})
+        }
+        else {
+            return res.status(200).json({error: 'Password successfully reseted!'})
+        }
+    }
+}
  module.exports = {
     GET_ALL_STORE,
     FIND_ONE_STORE,
@@ -228,5 +254,6 @@ const FIND_USER_BY_EMAIL = async (req, res) => {
     UPDATE_STORE_DATA,
     VALIDATE_ACCOUNT,
     RESEND_OTP,
-    FIND_USER_BY_EMAIL
+    FIND_USER_BY_EMAIL,
+    RESET_PASSWORD
  }
