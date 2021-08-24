@@ -242,7 +242,7 @@ const RESET_PASSWORD = async (req, res) => {
             return res.status(400).json({error: 'Failed to reset password!'})
         }
         else {
-            return res.status(200).json({error: 'Password successfully reseted!'})
+            return res.status(200).json({message: 'Password successfully reseted!'})
         }
     }
 }
