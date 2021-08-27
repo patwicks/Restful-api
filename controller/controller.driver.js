@@ -1,13 +1,16 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Driver = require('../models/model.driver');
 const dotenv = require('dotenv');
 const otpGenerator = require('generate-otp');
 const nodemailer = require('nodemailer');
+const cloudinary = require('../utility/utility.cloudinary');
 const { registerValidation, loginValidation } = require('../validation/validation.driver.data');
 
 dotenv.config();
 const MESSAGE_CLIENT = require('twilio')(process.env.SMS_API_SID, process.env.SMS_API_TOKEN);
+
+const Driver = require('../models/model.driver');
+
 // get all the user
 const GET_ALL_USER = async (req, res) => {
     try{
@@ -96,7 +99,7 @@ const LOGIN_USER =  async (req, res) => {
     // Password is Correct
     // create and assigned token
     const token = jwt.sign({_id: driver._id }, process.env.TOKEN_SECRET);
-    res.header('auth-token', token).json(driver);
+    res.header('authtoken', token).json(driver);
     }catch(err) {
     res.status(400).json({error: 'Failed to login!'})
     }  
@@ -241,7 +244,29 @@ const RESET_PASSWORD = async (req, res) => {
         }
     }
 }
+// upload profile
+const UPLOAD_PROFILE = async (req, res) => {
+   const {user} = req;
+   if(!user) return res.status(401).json({error: 'anuathorized access!'});
 
+   try{
+    const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "driver_profile",
+        public_id: `${user._id}_profile`,
+        width: 500,
+        height: 500,
+        crop: 'fill'
+    })
+
+    await Driver.findByIdAndUpdate(user._id, {profileURL: result.url}, {useFindAndModify: false});
+
+    res.status(200).json({message: 'Profile picture has updated!'});
+
+   }catch(error) {
+    console.log(error)
+    res.status(500).json({error: 'Internal server error!'})
+   }
+}
  module.exports = {
     GET_ALL_USER,
     FIND_ONE_USER,
@@ -251,5 +276,6 @@ const RESET_PASSWORD = async (req, res) => {
     VALIDATE_ACCOUNT,
     RESEND_OTP,
     FIND_USER_BY_EMAIL,
-    RESET_PASSWORD
+    RESET_PASSWORD,
+    UPLOAD_PROFILE
  }

@@ -60,6 +60,9 @@ const driverSchema = new mongoose.Schema({
     dateOfRegistration: {
         type: Date,
         default: Date.now()
+    },
+    profileURL: {
+        type: String
     }
 });
 

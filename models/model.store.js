@@ -70,6 +70,12 @@ const storeSchema = new mongoose.Schema({
     dateOfRegistration: {
         type: Date,
         default: Date.now()
+    },
+    profile: {
+        type: String
+    },
+    coverProfile: {
+        type: String
     }
 });
 

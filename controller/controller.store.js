@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const otpGenerator = require('generate-otp');
 const { registerValidationStore, loginValidationStore } = require('../validation/validation.store.data');
 
+
 dotenv.config();
 const MESSAGE_CLIENT = require('twilio')(process.env.SMS_API_SID, process.env.SMS_API_TOKEN);
 // get all the user
@@ -246,6 +247,7 @@ const RESET_PASSWORD = async (req, res) => {
         }
     }
 }
+
  module.exports = {
     GET_ALL_STORE,
     FIND_ONE_STORE,
