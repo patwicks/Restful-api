@@ -99,7 +99,7 @@ const LOGIN_USER =  async (req, res) => {
     // Password is Correct
     // create and assigned token
     const token = jwt.sign({_id: driver._id }, process.env.TOKEN_SECRET);
-    res.header('authtoken', token).json(driver._id);
+    res.header('authtoken', token).json(driver._id, token);
     }catch(err) {
         return res.status(400).json({error: 'Invalid Account!'})
     }  
