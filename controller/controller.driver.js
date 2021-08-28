@@ -90,18 +90,21 @@ const LOGIN_USER =  async (req, res) => {
     const driver = await Driver.findOne({email: req.body.email});
     const validated = driver.isValidated;
     const validPassword = await bcrypt.compare(req.body.password, driver.password);
-    if(!driver || !validPassword){
-        return res.status(400).json({error: 'Invalid email or password!'});
-    }
-    else if(validated === false){
-        return res.status(400).json({error: 'Please validate your account!'});
-    }
+
     // Password is Correct
     // create and assigned token
     const token = jwt.sign({_id: driver._id }, process.env.TOKEN_SECRET);
     res.header('authtoken', token).json(driver);
     }catch(err) {
-    res.status(400).json({error: 'Failed to login!'})
+        if(!driver || !validPassword){
+            return res.status(400).json({error: 'Invalid email or password!'});
+        }
+        else if(validated === false){
+            return res.status(400).json({error: 'Please validate your account!'});
+        }
+        else {
+           res.status(400).json({error: 'Failed to login!'}) 
+        }  
     }  
 }
 // update userdata
