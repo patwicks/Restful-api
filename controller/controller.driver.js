@@ -58,7 +58,8 @@ const CREATE_NEW_USER = async (req, res) => {
         password: hashedPassword,
         contactNo: req.body.contactNo,
         otpUsed: myOTP,
-        isValidated: req.body.isValidated
+        isValidated: req.body.isValidated,
+        profileURL: req.body.profileURL
     });
     try{
         const saveNewUser = await driver.save();
