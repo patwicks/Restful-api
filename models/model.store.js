@@ -71,10 +71,10 @@ const storeSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    profile: {
+    profileURL: {
         type: String
     },
-    coverProfile: {
+    coverPhotoURL: {
         type: String
     }
 });

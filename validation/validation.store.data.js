@@ -14,7 +14,9 @@ const registerValidationStore = (data) => {
         password: Joi.string().required().min(8).max(255),
         contactNo: Joi.string().required().min(10).max(10),
         otpUsed: Joi.string(),
-        isValidated: Joi.boolean().required()
+        isValidated: Joi.boolean().required(),
+        profileURL: Joi.string().uri(),
+        coverPhotoURL: Joi.string().uri(),
     });
     return schema.validate(data);
 }

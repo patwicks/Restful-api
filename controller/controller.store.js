@@ -4,6 +4,7 @@ const Store = require('../models/model.store');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('generate-otp');
+const cloudinary = require('../utility/utility.cloudinary');
 const { registerValidationStore, loginValidationStore } = require('../validation/validation.store.data');
 
 
@@ -58,7 +59,9 @@ const CREATE_NEW_STORE = async (req, res) => {
         password: hashedPassword,
         contactNo: req.body.contactNo,
         otpUsed: myOTP,
-        isValidated: req.body.isValidated
+        isValidated: req.body.isValidated,
+        profileURL: req.body.profileURL,
+        coverPhotoURL: req.body.coverPhotoURL
     });
     try{
         const saveNewUser = await store.save();
@@ -99,7 +102,7 @@ const LOGIN_STORE =  async (req, res) => {
     // Password is Correct
     // create and assigned token
     const token = jwt.sign({_id: store._id }, process.env.TOKEN_SECRET);
-    res.header('auth-token', token).json(store);
+    res.header('authtoken', token).json({userID: store._id, userType: store.accountType, userToken: token});
     }catch(err) {
     res.status(400).json({error: 'Failed to login!'})
     }  
@@ -248,6 +251,54 @@ const RESET_PASSWORD = async (req, res) => {
     }
 }
 
+// upload profile
+const UPLOAD_PROFILE_STORE = async (req, res) => {
+    const {user} = req;
+    console.log(user)
+    if(!user) return res.status(401).json({error: 'anuathorized access!'});
+ 
+    try{
+     const result = await cloudinary.uploader.upload(req.file.path, {
+         folder: "store_profile",
+         public_id: `${user._id}_profile`,
+         width: 500,
+         height: 500,
+         crop: 'fill'
+     })
+ 
+     await Store.findByIdAndUpdate(user._id, {profileURL: result.url}, {useFindAndModify: false});
+ 
+     res.status(200).json({message: 'Profile picture has updated!'});
+ 
+    }catch(error) {
+     console.log(error)
+     res.status(500).json({error: 'Internal server error!'})
+    }
+ }
+
+ // upload profile
+const UPLOAD_COVER_PHOTO = async (req, res) => {
+    const {user} = req;
+    console.log(user)
+    if(!user) return res.status(401).json({error: 'anuathorized access!'});
+ 
+    try{
+     const result = await cloudinary.uploader.upload(req.file.path, {
+         folder: "store_cover_photo",
+         public_id: `${user._id}_cover`,
+         width: 640,
+         height: 315,
+         crop: 'fill'
+     })
+ 
+     await Store.findByIdAndUpdate(user._id, {profileURL: result.url}, {useFindAndModify: false});
+ 
+     res.status(200).json({message: 'Cover Photo has updated!'});
+ 
+    }catch(error) {
+     res.status(500).json({error: 'Internal server error!'})
+    }
+ }
  module.exports = {
     GET_ALL_STORE,
     FIND_ONE_STORE,
@@ -257,5 +308,7 @@ const RESET_PASSWORD = async (req, res) => {
     VALIDATE_ACCOUNT,
     RESEND_OTP,
     FIND_USER_BY_EMAIL,
-    RESET_PASSWORD
+    RESET_PASSWORD,
+    UPLOAD_PROFILE_STORE,
+    UPLOAD_COVER_PHOTO
  }
