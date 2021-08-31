@@ -104,7 +104,13 @@ const LOGIN_STORE =  async (req, res) => {
     // Password is Correct
     // create and assigned token
     const token = jwt.sign({_id: store._id }, process.env.TOKEN_SECRET);
-    res.header('authtoken', token).json({userID: store._id, userType: store.accountType, userToken: token});
+    res.header('authtoken', token).json({
+        userID: store._id, 
+        userType: store.accountType,
+        storeLatitude: store.latitude,
+        storeLongitude: store.longitude, 
+        userToken: token
+    });
     }catch(err) {
     res.status(400).json({error: 'Failed to login!'})
     }  
