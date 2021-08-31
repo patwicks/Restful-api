@@ -75,8 +75,16 @@ const storeSchema = new mongoose.Schema({
         type: String
     },
     coverPhotoURL: {
-        type: String
-    }
+        type: String,
+    },
+    latitude: {
+        type: String,
+        required: true
+    },
+    longitude: {
+        type: String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Store', storeSchema);
