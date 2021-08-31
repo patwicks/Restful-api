@@ -62,8 +62,8 @@ const CREATE_NEW_STORE = async (req, res) => {
         isValidated: req.body.isValidated,
         profileURL: req.body.profileURL,
         coverPhotoURL: req.body.coverPhotoURL,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
+        latitude: parseFloat(req.body.latitude),
+        longitude: parseFloat(req.body.longitude),
     });
     try{
         const saveNewUser = await store.save();

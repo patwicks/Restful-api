@@ -17,8 +17,8 @@ const registerValidationStore = (data) => {
         isValidated: Joi.boolean().required(),
         profileURL: Joi.string().uri(),
         coverPhotoURL: Joi.string().uri(),
-        latitude: Joi.string().required(),
-        longitude: Joi.string().required()
+        latitude: Joi.number().required(),
+        longitude: Joi.number().required()
     });
     return schema.validate(data);
 }

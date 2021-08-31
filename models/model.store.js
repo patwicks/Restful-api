@@ -78,11 +78,11 @@ const storeSchema = new mongoose.Schema({
         type: String,
     },
     latitude: {
-        type: String,
+        type: Number,
         required: true
     },
     longitude: {
-        type: String,
+        type: Number,
         required: true
     },
 });
