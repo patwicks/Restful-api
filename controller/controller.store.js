@@ -291,7 +291,7 @@ const UPLOAD_COVER_PHOTO = async (req, res) => {
          crop: 'fill'
      })
  
-     await Store.findByIdAndUpdate(user._id, {profileURL: result.url}, {useFindAndModify: false});
+     await Store.findByIdAndUpdate(user._id, {coverPhotoURL: result.url}, {useFindAndModify: false});
  
      res.status(200).json({message: 'Cover Photo has updated!'});
  
