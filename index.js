@@ -9,7 +9,7 @@ const DriverRoute = require("./routes/route.driver");
 const StoreRoute = require("./routes/route.store");
 const MessageRoute = require("./routes/route.message");
 const CoversationRoute = require("./routes/route.conversation");
-
+const ServiceRequestRoute = require("./routes/route.serviceRequest");
 dotenv.config();
 app.use(express.json());
 app.use(cors());
@@ -19,7 +19,7 @@ app.use("/api/driver", DriverRoute);
 app.use("/api/store", StoreRoute);
 app.use("/api/message", MessageRoute);
 app.use("/api/conversation", CoversationRoute);
-
+app.use("/api/service", ServiceRequestRoute);
 // connect to the database
 mongoose.connect(process.env.DB_CONNECTION_STRING, {
   useNewUrlParser: true,
