@@ -43,7 +43,33 @@ const SEND_REQUEST = async (req, res) => {
     console.log(err.message);
   }
 };
+const FIND_ONE_REQUEST = async (req, res) => {
+  try {
+    const request = await Request.findById(req.params.requestId);
+    res.json(request);
+  } catch (err) {
+    res.json({ error: "No request found!" });
+  }
+};
+
+const CANCEL_REQUEST = async (req, res) => {
+  try {
+    const request = await Request.updateOne(
+      { _id: req.params.requestId },
+      {
+        $set: {
+          transactionStatus: req.body.transactionStatus,
+        },
+      }
+    );
+    res.status(200).json({ message: "Cancelled Successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: "Unexpected error occured. Try again!" });
+  }
+};
 
 module.exports = {
   SEND_REQUEST,
+  FIND_ONE_REQUEST,
+  CANCEL_REQUEST
 };
