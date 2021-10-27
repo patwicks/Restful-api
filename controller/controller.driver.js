@@ -111,6 +111,8 @@ const LOGIN_USER = async (req, res) => {
     const token = jwt.sign({ _id: driver._id }, process.env.TOKEN_SECRET);
     res.header("authtoken", token).json({
       userID: driver._id,
+      driverFullname: `${driver.firstname} ${driver.middlename} ${driver.lastname}`,
+      driverProfile: driver.profileURL,
       userType: driver.accountType,
       userToken: token,
     });
