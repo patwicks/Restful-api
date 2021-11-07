@@ -120,8 +120,7 @@ const LOGIN_USER = async (req, res) => {
     return res.status(400).json({ error: "Invalid Account!" });
   }
 };
-// update userdata
-
+// update user data
 const UPDATE_USER_DATA = async (req, res) => {
   try {
     // Hasing password using Bcrypt
@@ -293,6 +292,7 @@ const UPLOAD_PROFILE = async (req, res) => {
     res.status(500).json({ error: "Internal server error!" });
   }
 };
+
 module.exports = {
   GET_ALL_USER,
   FIND_ONE_USER,

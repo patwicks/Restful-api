@@ -11,6 +11,7 @@ const {
   RESET_PASSWORD,
   UPLOAD_PROFILE_STORE,
   UPLOAD_COVER_PHOTO,
+  SEARCH_SERVICE,
 } = require("../controller/controller.store");
 
 const VERIFY = require("../middlewares/authMiddleware");
@@ -18,6 +19,7 @@ const HANDLE_UPLOAD = require("../utility/utility.uploadProfile");
 const HANDLE_UPLOAD_COVER = require("../utility/utility.uploadCover");
 const HANDLE_UPLOAD_MULTIPLE = require("../utility/utility.uploadMultipleImages");
 //
+router.get("/search", SEARCH_SERVICE);
 router.get("/", GET_ALL_STORE);
 router.get("/:storeId", FIND_ONE_STORE);
 router.put("/update/:storeId", UPDATE_STORE_DATA);

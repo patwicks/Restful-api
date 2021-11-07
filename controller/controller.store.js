@@ -356,8 +356,21 @@ const UPLOAD_COVER_PHOTO = async (req, res) => {
     res.status(500).json({ error: "Internal server error!" });
   }
 };
-const UPLOAD_MULTIPLE_IMAGES = () => {};
+
+const SEARCH_SERVICE = async (req, res) => {
+  try {
+    const stores = await Store.find({
+      services: { $regex: req.query.service, $options: "i" },
+    });
+    if (stores) {
+      res.status(200).json(stores);
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Failed to search services!" });
+  }
+};
 module.exports = {
+  SEARCH_SERVICE,
   GET_ALL_STORE,
   FIND_ONE_STORE,
   CREATE_NEW_STORE,

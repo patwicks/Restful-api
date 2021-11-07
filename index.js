@@ -11,6 +11,9 @@ const MessageRoute = require("./routes/route.message");
 const CoversationRoute = require("./routes/route.conversation");
 const ServiceRequestRoute = require("./routes/route.serviceRequest");
 const FeedbackRoute = require("./routes/route.feedback");
+const PostRoute = require("./routes/route.post");
+const CommentRoute = require("./routes/route.comment");
+
 dotenv.config();
 app.use(express.json());
 app.use(cors());
@@ -22,6 +25,9 @@ app.use("/api/message", MessageRoute);
 app.use("/api/conversation", CoversationRoute);
 app.use("/api/service", ServiceRequestRoute);
 app.use("/api/feedback", FeedbackRoute);
+app.use("/api/post", PostRoute);
+app.use("/api/comment", CommentRoute);
+
 // connect to the database
 mongoose.connect(process.env.DB_CONNECTION_STRING, {
   useNewUrlParser: true,
