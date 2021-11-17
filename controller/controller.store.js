@@ -77,6 +77,7 @@ const CREATE_NEW_STORE = async (req, res) => {
         errorr: "Images not uploaded successfully",
       });
     }
+    const gallery = [];
 
     const store = new Store({
       accountType: accountType,
@@ -100,7 +101,7 @@ const CREATE_NEW_STORE = async (req, res) => {
       fullyVerified: req.body.fullyVerified,
       services: req.body.services,
       permit: urls,
-      gallery: req.body.gallery,
+      gallery: gallery,
     });
     const saveNewUser = await store.save();
     // send sms otp numbers
