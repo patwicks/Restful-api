@@ -99,6 +99,9 @@ const storeSchema = new mongoose.Schema({
   permit: {
     type: Array,
   },
+  gallery: {
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model("Store", storeSchema);

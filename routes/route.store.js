@@ -12,6 +12,7 @@ const {
   UPLOAD_PROFILE_STORE,
   UPLOAD_COVER_PHOTO,
   SEARCH_SERVICE,
+  GALLERY_UPLOAD,
 } = require("../controller/controller.store");
 
 const VERIFY = require("../middlewares/authMiddleware");
@@ -31,5 +32,6 @@ router.put("/reset/:storeId", RESET_PASSWORD);
 router.post("/forgot-password", FIND_USER_BY_EMAIL);
 router.post("/upload", VERIFY, HANDLE_UPLOAD, UPLOAD_PROFILE_STORE);
 router.post("/upload/cover", VERIFY, HANDLE_UPLOAD_COVER, UPLOAD_COVER_PHOTO);
+router.post("/upload/gallery/:storeId",HANDLE_UPLOAD_MULTIPLE, GALLERY_UPLOAD);
 
 module.exports = router;

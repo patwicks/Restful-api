@@ -68,8 +68,21 @@ const CANCEL_REQUEST = async (req, res) => {
   }
 };
 
+//   GET THE SPECIFIC USER CONVERSATION
+const GET_STORE_REQUEST = async (req, res) => {
+  try {
+    const request = await Request.find({
+      transactionMember: { $in: [req.params.storeId] },
+    });
+    res.status(200).json(request);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 module.exports = {
   SEND_REQUEST,
   FIND_ONE_REQUEST,
-  CANCEL_REQUEST
+  CANCEL_REQUEST,
+  GET_STORE_REQUEST,
 };

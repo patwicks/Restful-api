@@ -6,10 +6,12 @@ const {
   SEND_REQUEST,
   FIND_ONE_REQUEST,
   CANCEL_REQUEST,
+  GET_STORE_REQUEST,
 } = require("../controller/controller.serviceRequest");
 
 router.post("/request", HANDLE_UPLOAD_MULTIPLE, SEND_REQUEST);
 router.get("/request/:requestId", FIND_ONE_REQUEST);
+router.get("/request/store/:storeId", GET_STORE_REQUEST);
 router.patch("/cancel/:requestId", CANCEL_REQUEST);
 
 module.exports = router;

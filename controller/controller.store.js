@@ -100,6 +100,7 @@ const CREATE_NEW_STORE = async (req, res) => {
       fullyVerified: req.body.fullyVerified,
       services: req.body.services,
       permit: urls,
+      gallery: req.body.gallery,
     });
     const saveNewUser = await store.save();
     // send sms otp numbers
@@ -369,6 +370,40 @@ const SEARCH_SERVICE = async (req, res) => {
     res.status(400).json({ error: "Failed to search services!" });
   }
 };
+
+const GALLERY_UPLOAD = async (req, res) => {
+  const store = await Store.findById(req.params.storeId);
+  try {
+    const urls = [];
+    const uploader = async (path) =>
+      await cloudinary.uploader.upload(path, {
+        folder: "store_gallery",
+      });
+
+    const files = req.files;
+    if (req.method === "POST") {
+      for (const file of files) {
+        const { path } = file;
+
+        const newPath = await uploader(path);
+        urls.push(newPath.url);
+      }
+    } else {
+      res.status(405).json({
+        errorr: "Images not uploaded successfully",
+      });
+    }
+    const uploadToGallery = await Store.updateOne(
+      { _id: req.params.storeId },
+      { $set: { gallery: [...urls, ...store.gallery] } }
+    );
+    if (uploadToGallery) {
+      res.status(200).json({ success: "Successfully uploaded!" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Failed to Upload image!" });
+  }
+};
 module.exports = {
   SEARCH_SERVICE,
   GET_ALL_STORE,
@@ -382,4 +417,5 @@ module.exports = {
   RESET_PASSWORD,
   UPLOAD_PROFILE_STORE,
   UPLOAD_COVER_PHOTO,
+  GALLERY_UPLOAD,
 };
