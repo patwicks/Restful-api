@@ -41,6 +41,9 @@ const CREATE_NEW_STORE = async (req, res) => {
   const { error } = registerValidationStore(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  // check list number
+  const count = await Store.find();
+
   // Check email if already existing to the datbase
   const checkEmailExist = await Store.findOne({ email: req.body.email });
   if (checkEmailExist)
@@ -54,8 +57,6 @@ const CREATE_NEW_STORE = async (req, res) => {
   // generate random user id
   const accountType = "store";
   // generate random chars
-
-  const random = crypto.randomBytes(20).toString("hex");
 
   try {
     const urls = [];
@@ -80,6 +81,7 @@ const CREATE_NEW_STORE = async (req, res) => {
     const gallery = [];
 
     const store = new Store({
+      id: count.length + 1,
       accountType: accountType,
       firstname: req.body.firstname.trim(),
       lastname: req.body.lastname.trim(),

@@ -42,6 +42,9 @@ const CREATE_NEW_USER = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  // number of account in database + 1
+  const count = await Driver.find();
+
   // Check email if already existing to the datbase
   const checkEmailExist = await Driver.findOne({ email: req.body.email });
   if (checkEmailExist)
@@ -55,6 +58,7 @@ const CREATE_NEW_USER = async (req, res) => {
   // generate random user id
   const accountType = "driver";
   const driver = new Driver({
+    id: count.length + 1,
     accountType: accountType,
     firstname: req.body.firstname.trim(),
     lastname: req.body.lastname.trim(),
@@ -123,9 +127,6 @@ const LOGIN_USER = async (req, res) => {
 // update user data
 const UPDATE_USER_DATA = async (req, res) => {
   try {
-    // Hasing password using Bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const updateUserData = await Driver.updateOne(
       { _id: req.params.driverId },
       {
@@ -136,7 +137,6 @@ const UPDATE_USER_DATA = async (req, res) => {
           gender: req.body.gender,
           age: req.body.age,
           email: req.body.email.trim(),
-          password: hashedPassword,
           contactNo: req.body.contactNo,
         },
       }

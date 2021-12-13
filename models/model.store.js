@@ -102,6 +102,9 @@ const storeSchema = new mongoose.Schema({
   gallery: {
     type: Array,
   },
+  id: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Store", storeSchema);
