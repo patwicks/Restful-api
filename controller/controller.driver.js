@@ -138,6 +138,7 @@ const UPDATE_USER_DATA = async (req, res) => {
           age: req.body.age,
           email: req.body.email.trim(),
           contactNo: req.body.contactNo,
+          isValidated: req.body.isValidated,
         },
       }
     );
