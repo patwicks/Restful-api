@@ -17,7 +17,7 @@ const MESSAGE_CLIENT = require("twilio")(
 
 const Driver = require("../models/model.driver");
 
-// get all the user
+// get all the driver
 const GET_ALL_USER = async (req, res) => {
   try {
     const drivers = await Driver.find();
