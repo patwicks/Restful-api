@@ -160,9 +160,6 @@ const LOGIN_STORE = async (req, res) => {
 
 const UPDATE_STORE_DATA = async (req, res) => {
   try {
-    // Hasing password using Bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const updateUserData = await Store.updateOne(
       { _id: req.params.storeId },
       {
@@ -175,8 +172,8 @@ const UPDATE_STORE_DATA = async (req, res) => {
           storeName: req.body.storeName.trim(),
           storeAddress: req.body.storeAddress.trim(),
           email: req.body.email.trim(),
-          password: hashedPassword,
           contactNo: req.body.contactNo,
+          isValidated: req.body.isValidated,
         },
       }
     );
