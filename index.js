@@ -13,6 +13,7 @@ const ServiceRequestRoute = require("./routes/route.serviceRequest");
 const FeedbackRoute = require("./routes/route.feedback");
 const PostRoute = require("./routes/route.post");
 const CommentRoute = require("./routes/route.comment");
+const ReportedRoute = require("./routes/routes.reported");
 
 dotenv.config();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use("/api/service", ServiceRequestRoute);
 app.use("/api/feedback", FeedbackRoute);
 app.use("/api/post", PostRoute);
 app.use("/api/comment", CommentRoute);
+app.use("/api/report", ReportedRoute);
 
 // connect to the database
 mongoose.connect(process.env.DB_CONNECTION_STRING, {

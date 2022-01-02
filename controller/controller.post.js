@@ -28,7 +28,7 @@ const CREATE_POST = async (req, res) => {
       userName: req.body.userName,
       userPostText: req.body.userPostText,
       userPostImage: urls,
-      userType: req.body.userType
+      userType: req.body.userType,
     });
     const saveNewPost = await post.save();
 
@@ -50,7 +50,18 @@ const GET_ALL_POST = async (req, res) => {
     res.status(400).json({ error: "Cannot fetch any post!" });
   }
 };
+
+// delete Post
+const DELETE_POST = async (req, res) => {
+  try {
+    const findPostTodelete = await Post.deleteOne({ _id: req.params.postId });
+    res.status(200).json({ message: "Successfully deleted!" });
+  } catch (error) {
+    res.status(400).json({ error: "An error occured!" });
+  }
+};
 module.exports = {
   CREATE_POST,
   GET_ALL_POST,
+  DELETE_POST,
 };
