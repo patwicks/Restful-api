@@ -404,6 +404,26 @@ const GALLERY_UPLOAD = async (req, res) => {
     res.status(400).json({ error: "Failed to Upload image!" });
   }
 };
+
+// update fully verified
+const UPDATE_FULLY_VERIFIED = async (req, res) => {
+  try {
+    const fullyVerifyStore = await Store.updateOne(
+      { _id: req.params.storeId },
+      {
+        $set: {
+          fullyVerified: true,
+        },
+      }
+    );
+
+    if (fullyVerifyStore) {
+      res.status(200).json({ message: "Store is fully verified now" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: "Something went wrong on verification!" });
+  }
+};
 module.exports = {
   SEARCH_SERVICE,
   GET_ALL_STORE,
@@ -418,4 +438,5 @@ module.exports = {
   UPLOAD_PROFILE_STORE,
   UPLOAD_COVER_PHOTO,
   GALLERY_UPLOAD,
+  UPDATE_FULLY_VERIFIED
 };

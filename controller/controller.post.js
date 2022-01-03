@@ -50,6 +50,18 @@ const GET_ALL_POST = async (req, res) => {
     res.status(400).json({ error: "Cannot fetch any post!" });
   }
 };
+// get one post
+
+const GET_ONE_POST = async (req, res) => {
+  try {
+    const getOnePost = await Post.find({ _id: req.params.postId });
+    if (getOnePost) {
+      res.status(200).json(getOnePost);
+    }
+  } catch (error) {
+    res.send(400).json({ error: "No data was found!" });
+  }
+};
 
 // delete Post
 const DELETE_POST = async (req, res) => {
@@ -64,4 +76,5 @@ module.exports = {
   CREATE_POST,
   GET_ALL_POST,
   DELETE_POST,
+  GET_ONE_POST,
 };

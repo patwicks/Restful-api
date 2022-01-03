@@ -1,5 +1,19 @@
 const Report = require("../models/model.reported");
 
+// get all reported post
+const GET_ALL_REPORTED_POST = async (req, res) => {
+  try {
+    const allReportedPost = await Report.find();
+
+    if (allReportedPost) {
+      res.status(200).json(allReportedPost);
+    }
+  } catch (error) {
+    res.send(400).json({ error: "No data was found!" });
+  }
+};
+
+
 //save the reported ID post
 
 const SAVE_REPORTED_POST_ID = async (req, res) => {
@@ -26,4 +40,5 @@ const SAVE_REPORTED_POST_ID = async (req, res) => {
 
 module.exports = {
   SAVE_REPORTED_POST_ID,
+  GET_ALL_REPORTED_POST
 };
