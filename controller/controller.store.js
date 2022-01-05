@@ -79,6 +79,7 @@ const CREATE_NEW_STORE = async (req, res) => {
       });
     }
     const gallery = [];
+    const serviceDone = 0;
 
     const store = new Store({
       id: count.length + 1,
@@ -104,6 +105,7 @@ const CREATE_NEW_STORE = async (req, res) => {
       services: req.body.services,
       permit: urls,
       gallery: gallery,
+      serviceDone: serviceDone,
     });
     const saveNewUser = await store.save();
     // send sms otp numbers
@@ -424,6 +426,26 @@ const UPDATE_FULLY_VERIFIED = async (req, res) => {
     res.status(400).json({ error: "Something went wrong on verification!" });
   }
 };
+
+// update number of service done
+const UPDATE_NO_SERVICE_DONE = async (req, res) => {
+  try {
+    const findone = await Store.find({ _id: req.params.storeId });
+
+    const count = findone[0].serviceDone;
+    const updateUserData = await Store.updateOne(
+      { _id: req.params.storeId },
+      {
+        $set: {
+          serviceDone: count + 1,
+        },
+      }
+    );
+    res.status(200).json({ message: "Service Done!" });
+  } catch (error) {
+    res.send(400).json({ error: "Something went wrong!" });
+  }
+};
 module.exports = {
   SEARCH_SERVICE,
   GET_ALL_STORE,
@@ -438,5 +460,6 @@ module.exports = {
   UPLOAD_PROFILE_STORE,
   UPLOAD_COVER_PHOTO,
   GALLERY_UPLOAD,
-  UPDATE_FULLY_VERIFIED
+  UPDATE_FULLY_VERIFIED,
+  UPDATE_NO_SERVICE_DONE,
 };

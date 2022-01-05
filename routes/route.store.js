@@ -14,6 +14,7 @@ const {
   SEARCH_SERVICE,
   GALLERY_UPLOAD,
   UPDATE_FULLY_VERIFIED,
+  UPDATE_NO_SERVICE_DONE,
 } = require("../controller/controller.store");
 
 const VERIFY = require("../middlewares/authMiddleware");
@@ -35,5 +36,6 @@ router.post("/upload", VERIFY, HANDLE_UPLOAD, UPLOAD_PROFILE_STORE);
 router.post("/upload/cover", VERIFY, HANDLE_UPLOAD_COVER, UPLOAD_COVER_PHOTO);
 router.post("/upload/gallery/:storeId", HANDLE_UPLOAD_MULTIPLE, GALLERY_UPLOAD);
 router.put("/update/fullyverified/:storeId", UPDATE_FULLY_VERIFIED);
+router.put("/update/servicedone/:storeId", UPDATE_NO_SERVICE_DONE);
 
 module.exports = router;

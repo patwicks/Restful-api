@@ -105,6 +105,9 @@ const storeSchema = new mongoose.Schema({
   id: {
     type: Number,
   },
+  serviceDone: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Store", storeSchema);
