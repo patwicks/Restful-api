@@ -400,7 +400,7 @@ const GALLERY_UPLOAD = async (req, res) => {
       { $set: { gallery: [...urls, ...store.gallery] } }
     );
     if (uploadToGallery) {
-      res.status(200).json({ success: "Successfully uploaded!" });
+      res.status(200).json(uploadToGallery);
     }
   } catch (err) {
     res.status(400).json({ error: "Failed to Upload image!" });
